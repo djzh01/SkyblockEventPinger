@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const config = require('./config.json');
-const { exception } = require('console');
+//const { exception } = require('console');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -15,8 +15,7 @@ for (const file of commandFiles) {
 client.on('message', message => {
 	if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
-    const args = message.content.slice(config.prefix.length).trim().split(/ +/);
-    console.log(typeof(args))
+    const args = message.content.slice(config.prefix.length).trim().split(/ +/); 
     const commandName = args.shift().toLowerCase();
     
     if (!client.commands.has(commandName)) return;

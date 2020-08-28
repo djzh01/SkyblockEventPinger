@@ -1,0 +1,4 @@
+{
+    "help": "Help Function. Pass in the the name of the commands you want to know about. E.g !help help",
+    "event": "Events Function. Pass in the events you want to know about. Valid arguments: [oringo, newyears, jerry, spooky]"
+}
