@@ -1,0 +1,22 @@
+{
+    "jerry": {
+        "name": "Jerry Event",
+        "time": 1598656500000,
+        "delta": 446400000
+    },
+    "spooky": {
+        "name": "SpookyFest",
+        "time": 1598960100000,
+        "delta": 446400000
+    },
+    "newyears": {
+        "name": "New Year's Festival",
+        "time": 1598662500000,
+        "delta": 446400000
+    },
+    "oringo": {
+        "name": "Oringo",
+        "time": 1598777700000,
+        "delta": 223200000
+    }
+}
