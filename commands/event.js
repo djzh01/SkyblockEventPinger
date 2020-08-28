@@ -1,33 +1,58 @@
 module.exports = {
     name: 'event',
     description: 'Display upcoming events',
-    execute(message, args) {
-        var jerry = new Date(2020, 7, 28, 19, 15).getTime();
-        var spooky = new Date(2020, 8, 1, 7, 35).getTime();
-        var newYears = new Date(2020, 7, 28, 20, 55).getTime();
-        var oringo = new Date(2020, 7, 30, 4, 55).getTime();
-        var now = Date.now();
 
-        try {
-            if(args.includes('jerry')){
-                var timeTill = jerry.getTime()-now;
-                const days = Math.floor(timeTill/86400000)
-                timeTill = timeTill % 86400000
-                const hours = Math.floor(timeTill/3600000)
-                timeTill = timeTill % 3600000
-                const minutes = Math.floor(timeTill/60000)
-                message.channel.send(`Jerry Event in ${days} days, ${hours}, ${minutes}`)
-                while(now > jerry.getTime){
-                    jerry += 446400000
-                    console.log('updated time')
-                }
+    execute(message, args) {
+        const fs = require('fs');
+        const eventList = require('./eventlist.json')
+
+        var now = Date.now();
+        
+        if (args == undefined || args.length == 0){
+            for (var event in eventList){
+                if(eventList.hasOwnProperty(event))
+                    args.push(event);
             }
-        } catch (error) {
-            message.reply('Sorry there was an issue!');
-            console.log(error);
         }
+
+        args.forEach(arg => {
+            try {
+                if(eventList[arg] != undefined){
+
+                    var timeAt = new Date(eventList[arg].time).getTime();
+                    var timeTill = timeAt-now;
+                    const days = Math.floor(timeTill/86400000)
+                    timeTill = timeTill % 86400000
+                    const hours = Math.floor(timeTill/3600000)
+                    timeTill = timeTill % 3600000
+                    const minutes = Math.floor(timeTill/60000)
+
+                    message.channel.send(`${eventList[arg].name} in ${days} days, ${hours} hours, ${minutes} minutes`)
+                    
+                    while(now > timeAt){
+                        timeAt += eventList[arg].delta
+                        eventList[arg].time += eventList[arg].delta
+                        console.log('updated time')
+                    }
+                }
+                else{
+                    message.channel.send(`Invalid Event Argument: ${arg} is not a valid event`)
+                }
+            } catch (error) {
+                message.reply('Sorry there was an issue!');
+                console.log(error);
+            }            
+        });
         
-        
-        //console.log(`events: ${args}`);
+        const eventJSString = JSON.stringify(eventList, null, 4);
+        console.log(eventJSString);
+        fs.writeFile('./commands/eventlist.json', eventJSString, err => {
+            if (err){
+                console.log(`${err} when writing file`);
+            }
+            else {
+                console.log('Updated File')
+            }
+        });
     },
 }
