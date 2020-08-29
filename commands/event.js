@@ -20,6 +20,13 @@ module.exports = {
                 if(eventList[arg] != undefined){
 
                     var timeAt = new Date(eventList[arg].time).getTime();
+
+                    while(now > timeAt){
+                        timeAt += eventList[arg].delta
+                        eventList[arg].time += eventList[arg].delta
+                        console.log('updated time')
+                    }
+
                     var timeTill = timeAt-now;
                     const days = Math.floor(timeTill/86400000)
                     timeTill = timeTill % 86400000
@@ -27,16 +34,10 @@ module.exports = {
                     timeTill = timeTill % 3600000
                     const minutes = Math.floor(timeTill/60000)
 
-                    message.channel.send(`${eventList[arg].name} in ${days} days, ${hours} hours, ${minutes} minutes`)
-                    
-                    while(now > timeAt){
-                        timeAt += eventList[arg].delta
-                        eventList[arg].time += eventList[arg].delta
-                        console.log('updated time')
-                    }
+                    message.channel.send(`${eventList[arg].name} in ${days} days, ${hours} hours, ${minutes} minutes`);                 
                 }
                 else{
-                    message.channel.send(`Invalid Event Argument: ${arg} is not a valid event`)
+                    message.channel.send(`Invalid Event Argument: ${arg} is not a valid event`);
                 }
             } catch (error) {
                 message.reply('Sorry there was an issue!');
